@@ -1,6 +1,6 @@
 Feature: Saved Accounts 
   Scenario: should save account locally, after page reload it should require passphrase to do the first transaction, and remember the passphrase for next transactions
-    When I go to "main/add-account/"
+    When I go to "/"
     Given I'm logged in as "genesis"
     When I wait 1 seconds
     And I refresh the page
@@ -45,3 +45,22 @@ Feature: Saved Accounts
     And I click "remove button"
     And I click "edit button"
     Then I should see 1 instances of "saved account card"
+
+  Scenario: should save accounts only once
+    When I go to "/"
+    And I fill in passphrase of "empty account" to "passphrase" field
+    And I click "login button"
+    Then I should be logged in as "empty account" account
+    When I click "saved accounts" in main menu
+    And I click "add lisk id card"
+    And I'm logged in as "genesis"
+    And I click "saved accounts" in main menu
+    Then I should see 2 instances of "saved account card"
+    When I click "add lisk id card"
+    And I'm logged in as "empty account"
+    When I click "saved accounts" in main menu
+    Then I should see 2 instances of "saved account card"
+    And I click "add lisk id card"
+    And I'm logged in as "genesis"
+    And I click "saved accounts" in main menu
+    Then I should see 2 instances of "saved account card"
